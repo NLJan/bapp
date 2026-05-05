@@ -123,10 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ");
     $stmt->execute([$title, $status, $revision, $notes, $sheet_id]);
 
-    // QR-code revisie bijwerken
- //   $stmt = $pdo->prepare("UPDATE qr_codes SET current_revision = ? WHERE sheet_id = ?");
- //   $stmt->execute([$revision, $sheet_id]);
-
     // Snapshot opslaan
     $stmt = $pdo->prepare("SELECT id, label, value FROM sheet_fields WHERE sheet_id = ?");
     $stmt->execute([$sheet_id]);
@@ -162,7 +158,7 @@ body { font-family: Arial; padding: 20px; }
 table { border-collapse: collapse; width: 100%; margin-top: 20px; }
 th, td { border: 1px solid #ccc; padding: 8px; }
 th { background: #eee; }
-input[type=text], textarea { width: 100%; }
+input[type=text], textarea { width: 100%; box-sizing: border-box; }
 .delete { color: red; font-weight: bold; }
 </style>
 </head>
@@ -178,10 +174,10 @@ input[type=text], textarea { width: 100%; }
 </p>
 
 <?php if (isset($_GET['saved'])): ?>
-<div style="color:green;">Gespeichert.</div>
+<div style="color:green; background:#e8f5e9; padding:10px; border-radius:4px;">✓ Gespeichert.</div>
 <?php endif; ?>
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" action="sheets_edit.php?id=<?= (int)$sheet_id ?>" enctype="multipart/form-data">
 
 <h2>Basisdaten</h2>
 
@@ -266,9 +262,9 @@ input[type=text], textarea { width: 100%; }
 </label>
 
 <br><br>
-<button type="submit">Speichern</button><br />
+<button type="submit" style="padding:10px 16px; font-size:16px; cursor:pointer;">Speichern</button><br />
 <a href="copy_sheet.php?id=<?= $sheet_id ?>" 
-   style="padding:6px 12px; background:#4CAF50; color:white; text-decoration:none;">
+   style="padding:6px 12px; background:#4CAF50; color:white; text-decoration:none; display:inline-block; margin-top:10px;">
    Blad kopiëren
 </a>
 
